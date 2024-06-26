@@ -1,0 +1,22 @@
+/* src/App.css */
+.app-container {
+    display: grid;
+    grid-template-columns: 10% 80% 10%;
+    height: 100vh;
+  }
+  
+  .sidebar {
+    background-color: #f0f0f0;
+    padding: 10px;
+  }
+  
+  .chatbot-wrapper {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  .empty-column {
+    /* Empty column, no styles needed */
+  }
+  

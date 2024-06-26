@@ -48,8 +48,8 @@ const Chatbot = () => {
   };
 
   return (
-    <Paper elevation={3} className="chatbot">
-      <Box className="messages">
+    <Paper elevation={3} className="chatbot-container">
+      <Box className="chatbot-messages">
         {messages.map((msg, index) => (
           <Typography
             key={index}
@@ -83,7 +83,7 @@ const Chatbot = () => {
           </Box>
         )}
       </Box>
-      <Box display="flex" alignItems="center">
+      <Box display="flex" alignItems="center" className="chatbot-input">
         <TextField
           fullWidth
           variant="outlined"

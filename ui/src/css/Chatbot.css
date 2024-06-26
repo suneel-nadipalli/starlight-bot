@@ -1,21 +1,31 @@
 /* src/Chatbot.css */
-.chatbot {
-    width: 400px;
-    margin: 50px auto;
-    padding: 20px;
+.chatbot-container {
     display: flex;
     flex-direction: column;
-    height: 500px;
+    width: 90%;
+    margin: 50px auto;
+    height: 90vh;
+    border-radius: 8px;
+    padding: 20px;
+    box-shadow: 0 3px 6px rgba(0, 0, 0, 0.1);
+    background-color: white;
   }
   
-  .messages {
+  .chatbot-messages {
     flex: 1;
     overflow-y: auto;
     display: flex;
     flex-direction: column;
+    height: 90%;
   }
   
   .message {
     margin: 10px;
+  }
+  
+  .chatbot-input {
+    display: flex;
+    align-items: center;
+    padding: 10px 0;
   }
   
