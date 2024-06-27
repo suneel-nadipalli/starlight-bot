@@ -3,7 +3,7 @@ This repository contains the code for Starbot - an interactive chatbot ready to 
 
 ## Demo
 
-![Demo](media/demo.mp4)
+https://github.com/suneel-nadipalli/starlight-bot/assets/140884446/3fbfdcef-1e25-478e-91c5-657e242df108
 
 ## Overview
 The project consists of two main components:
