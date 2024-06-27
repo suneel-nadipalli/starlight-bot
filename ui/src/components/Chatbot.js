@@ -1,5 +1,5 @@
 // src/Chatbot.js
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   Box,
   TextField,
@@ -9,47 +9,74 @@ import {
   CircularProgress,
 } from "@mui/material";
 import SendIcon from "@mui/icons-material/Send";
+import DeleteIcon from "@mui/icons-material/Delete";
 import axios from "axios";
 import "../css/Chatbot.css";
 
 const Chatbot = () => {
-  const [messages, setMessages] = useState([]);
+  // Hooks for managing messages, user input, and typing indicator
+  const [messages, setMessages] = useState(() => {
+    const savedMessages = localStorage.getItem("chatMessages");
+    return savedMessages ? JSON.parse(savedMessages) : [];
+  });
   const [input, setInput] = useState("");
   const [isTyping, setIsTyping] = useState(false);
 
+  // Hook to persist messages in localStorage
+  useEffect(() => {
+    localStorage.setItem("chatMessages", JSON.stringify(messages));
+  }, [messages]);
+
+  // Function to send user message and handle bot response
   const sendMessage = async () => {
     if (input.trim()) {
       const userMessage = { text: input, user: "user" };
-      setMessages([...messages, userMessage]);
-      setInput("");
+      setMessages([...messages, userMessage]); // Add user message to state
+      setInput(""); // Clear input field
 
-      setIsTyping(true);
+      setIsTyping(true); // Show typing indicator
       try {
         const response = await axios.post(
-          "http://127.0.0.1:5050/answer-simple",
+          "http://127.0.0.1:5050/answer-query",
           {
             message: input,
           },
         );
         console.log("Response from server:", response.data.bot);
         const botMessage = { text: response.data.bot, user: "bot" };
-        setMessages((prevMessages) => [...prevMessages, botMessage]);
+        setMessages((prevMessages) => [...prevMessages, botMessage]); // Add bot response to state
       } catch (error) {
         console.error("Error sending message:", error);
         const errorMessage = {
           text: "Error getting response from the server",
           user: "bot",
         };
-        setMessages((prevMessages) => [...prevMessages, errorMessage]);
+        setMessages((prevMessages) => [...prevMessages, errorMessage]); // Handle error in message state
       } finally {
-        setIsTyping(false);
+        setIsTyping(false); // Hide typing indicator
       }
     }
+  };
+
+  // Function to clear chat messages and reset localStorage
+  const handleClearMessages = () => {
+    localStorage.removeItem("chatMessages"); // Remove messages from localStorage
+    setMessages([]); // Clear messages in state
+    fetch("http://localhost:5050/clear-memory", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    })
+      .then((response) => response.json())
+      .then((data) => console.log(data)) // Log response from server
+      .catch((error) => console.error("Error clearing memory:", error)); // Log error if any
   };
 
   return (
     <Paper elevation={3} className="chatbot-container">
       <Box className="chatbot-messages">
+        {/* Render messages in conversational format */}
         {messages.map((msg, index) => (
           <Typography
             key={index}
@@ -69,6 +96,7 @@ const Chatbot = () => {
             {msg.text}
           </Typography>
         ))}
+        {/* Show typing indicator when bot is typing */}
         {isTyping && (
           <Box
             display="flex"
@@ -83,7 +111,15 @@ const Chatbot = () => {
           </Box>
         )}
       </Box>
+      {/* Input field and buttons for user interaction */}
       <Box display="flex" alignItems="center" className="chatbot-input">
+        <IconButton
+          color="secondary"
+          onClick={handleClearMessages}
+          title="Clear Messages"
+        >
+          <DeleteIcon />
+        </IconButton>
         <TextField
           fullWidth
           variant="outlined"

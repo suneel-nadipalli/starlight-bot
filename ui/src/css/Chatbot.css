@@ -1,31 +1,29 @@
-/* src/Chatbot.css */
 .chatbot-container {
-    display: flex;
-    flex-direction: column;
-    width: 90%;
-    margin: 50px auto;
-    height: 90vh;
-    border-radius: 8px;
-    padding: 20px;
-    box-shadow: 0 3px 6px rgba(0, 0, 0, 0.1);
-    background-color: white;
-  }
-  
-  .chatbot-messages {
-    flex: 1;
-    overflow-y: auto;
-    display: flex;
-    flex-direction: column;
-    height: 90%;
-  }
-  
-  .message {
-    margin: 10px;
-  }
-  
-  .chatbot-input {
-    display: flex;
-    align-items: center;
-    padding: 10px 0;
-  }
-  
+  display: flex; 
+  flex-direction: column; /* Arrange children in a column */
+  width: 80%; /* Take up 80% of the parent container's width */
+  margin: 50px auto; /* Center the container horizontally with 50px top and bottom margin */
+  height: 90vh; /* Take up 90% of the viewport height */
+  border-radius: 8px; /* Rounded corners */
+  padding: 20px; /* Padding inside the container */
+  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.1); /* Box shadow for depth */
+  background-color: white; /* White background */
+}
+
+.chatbot-messages {
+  flex: 1; /* Take remaining space */
+  overflow-y: auto; /* Enable vertical scrolling */
+  display: flex;
+  flex-direction: column; /* Arrange messages in a column */
+  height: 90%; /* Take up 90% of the container's height */
+}
+
+.message {
+  margin: 10px; /* Margin around each message */
+}
+
+.chatbot-input {
+  display: flex;
+  align-items: center;
+  padding: 10px 0; /* Padding top and bottom */
+}

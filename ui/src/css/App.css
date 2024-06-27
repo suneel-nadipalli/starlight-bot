@@ -1,22 +1,17 @@
-/* src/App.css */
 .app-container {
-    display: grid;
-    grid-template-columns: 10% 80% 10%;
-    height: 100vh;
-  }
-  
-  .sidebar {
-    background-color: #f0f0f0;
-    padding: 10px;
-  }
-  
-  .chatbot-wrapper {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-  }
-  
-  .empty-column {
-    /* Empty column, no styles needed */
-  }
-  
+  display: grid;
+  grid-template-columns: 20% 80% 0%; /* Three columns: sidebar (20%), chatbot-wrapper (80%), and empty-column (0%) */
+  height: 100vh; /* Full height of the viewport */
+}
+
+.sidebar {
+  background-color: #f0f0f0; /* Background color for the sidebar */
+  padding: 10px; /* Padding inside the sidebar */
+  width: 100%; /* Occupy full width of its container*/
+}
+
+.chatbot-wrapper {
+  display: flex; 
+  justify-content: center; /* Center content horizontally */
+  align-items: center; /* Center content vertically */
+}
