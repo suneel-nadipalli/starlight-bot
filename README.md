@@ -33,8 +33,7 @@ Prerequisites
 ### Clone the repository:
 
 ```bash 
-git clone https://github.com/yourusername/chatbot-app.git
-
+git clone https://github.com/suneel-nadipalli/starlight-bot.git
 cd starlight-bot
 
 ```
