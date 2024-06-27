@@ -1,6 +1,10 @@
 # Starbot - The Chabot Shining Light on Starlight
 This repository contains the code for Starbot - an interactive chatbot ready to answer the user's questions about World Famous Landmarks!
 
+## Demo
+
+![Demo](media/demo.mp4)
+
 ## Overview
 The project consists of two main components:
 
@@ -58,6 +62,10 @@ python app.py
 ## Frontend Setup
 
 ### Navigate to the frontend directory:
+
+## Change EOF type from CRLF to LF in all 3 .js files, found in the ```src``` folder
+
+![EOF Type Modification](media/lf-crlf.png)
 
 ```bash
 cd ui
