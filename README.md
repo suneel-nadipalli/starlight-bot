@@ -37,7 +37,7 @@ cd starlight-bot
 
 ### Install Python dependencies:
 
-```
+```bash
 cd api
 pip install -r requirements.txt
 ```
@@ -50,7 +50,7 @@ Create a .env.local file in the ```api``` directory with the following variables
 
 ### Run the Flask server:
 
-```
+```bash
 cd api
 python app.py
 ```
@@ -59,19 +59,19 @@ python app.py
 
 ### Navigate to the frontend directory:
 
-```
+```bash
 cd ui
 ```
 
 ### Install npm packages:
 
-```
+```bash
 npm install
 ```
 
 ### Start the React development server:
 
-```
+```bash
 npm start
 ```
 
