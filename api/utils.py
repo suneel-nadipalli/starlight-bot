@@ -4,9 +4,15 @@ from langchain.chat_models import ChatOpenAI
 
 from langchain.memory import ConversationBufferMemory
 
+from langchain_community.document_loaders import PyPDFLoader, TextLoader, WebBaseLoader
+
+from langchain_community.document_loaders.merge import MergedDataLoader
+
 from langchain.chains import ConversationChain
 
 from dotenv import load_dotenv
+
+from glob import glob
 
 import os
 
@@ -15,6 +21,38 @@ load_dotenv(dotenv_path="./.env.local")
 
 # setting OPENAI_API_KEY to the environment variable
 os.environ["OPENAI_API_KEY"] = os.getenv("OPENAI_API_KEY")
+
+def get_urls(file):
+
+    with open(file) as file:
+        urls = [line.rstrip() for line in file]
+    
+    return urls
+
+def get_data(dir):
+
+    loaders = []
+
+    for file in glob(f"{dir}/*"):
+        if file.endswith(".pdf"):
+        
+            loader = PyPDFLoader(file)
+            loaders.append(loader)
+            
+        elif file.endswith(".txt"):
+
+            if "urls" in file:
+
+                urls = get_urls(file)
+                loader = WebBaseLoader(urls)
+                loaders.append(loader)
+            else:
+                loader = TextLoader(file)
+                loaders.append(loader)
+    
+    merged_loader = MergedDataLoader(loaders=loaders)
+        
+    return merged_loader.load()
 
 def init_llm():
 

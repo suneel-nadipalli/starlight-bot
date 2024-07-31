@@ -4,11 +4,11 @@ from flask import Flask, request
 
 from dotenv import load_dotenv
 
-import os
+from rag_utils import *
+
+import os 
 
 from flask_cors import CORS
-
-from utils import *
 
 # loading in environtment variables from .env file
 load_dotenv(dotenv_path="./.env.local")
@@ -23,8 +23,7 @@ CORS(app)
 
 app.config["DEBUG"] = DEBUG
 
-# Initializing the language model
-chain = init_llm()
+history = []
 
 # Defining routes for API
 
@@ -32,31 +31,37 @@ chain = init_llm()
 def hello_world():
     return 'Hello, World!'
 
-@app.route("/answer-query", methods=["POST"])
-def answer_query():
-
+@app.route("/query_az_rag", methods=["POST"])
+def query_az_rag():
     """
-    Takes in a query from the user and returns a response from the language model
+    Takes in a query from the user and returns a response from the RAG model
 
         Parameters:
             message (str): The query from the user
 
         Returns:
-            response (str): The response from the language model
+            response (str): The response from the RAG model
     """  
+
+    global history
 
     # parsing JSON request for user query
     data = request.json
 
     query = data.get("message")
 
-    # querying the language model with the user query
-    response = query_llm(query, chain)
+    answer, history = az_rag_query(query, history)
 
-    return {"bot": response}
+    response = {
+        "answer": answer,
+        "srcs": []
+    }
 
-@app.route("/clear-memory", methods=["POST"])
-def clear_memory():
+    return response
+
+
+@app.route("/az_clear_memory", methods=["POST"])
+def az_clear_memory():
 
     """
     Clears the memory of the language model
@@ -69,12 +74,13 @@ def clear_memory():
     """
 
     # setting chain to be a global variable to keep track of memory being full or null   
-    global chain
+    global history
     
     # reinitializing the language model to clear memory
-    chain = init_llm() 
+    history = []
     
     return {"message": "Memory cleared"}
+
 
 if __name__ == "__main__":
     

@@ -37,13 +37,14 @@ const Chatbot = () => {
       setIsTyping(true); // Show typing indicator
       try {
         const response = await axios.post(
-          "http://127.0.0.1:5050/answer-query",
+          "http://127.0.0.1:5050/query_az_rag",
           {
             message: input,
           },
         );
-        console.log("Response from server:", response.data.bot);
-        const botMessage = { text: response.data.bot, user: "bot" };
+        console.log("Response from server:", response.data.answer);
+        console.log("Response from server 2:", response.data.srcs);
+        const botMessage = { text: response.data.answer, user: "bot" };
         setMessages((prevMessages) => [...prevMessages, botMessage]); // Add bot response to state
       } catch (error) {
         console.error("Error sending message:", error);
@@ -62,7 +63,7 @@ const Chatbot = () => {
   const handleClearMessages = () => {
     localStorage.removeItem("chatMessages"); // Remove messages from localStorage
     setMessages([]); // Clear messages in state
-    fetch("http://localhost:5050/clear-memory", {
+    fetch("http://localhost:5050/az_clear_memory", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
