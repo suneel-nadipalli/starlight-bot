@@ -1,13 +1,31 @@
-from mongo_utils import *
+from fastapi import FastAPI
+from fastapi.middleware.cors import CORSMiddleware
 
-client = connect_to_mongo()
+from pydantic import BaseModel
 
-print("Connected to MongoDB")
+class Name(BaseModel):
+    name: str 
 
-insert_data(client)
+app = FastAPI()
 
-print("Data inserted")
+origins = [
 
-insert_vs(client)
+]
 
-print("VS inserted")
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=origins,
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
+
+@app.get("/")
+async def root():
+    return {"message": "Hello World Again from all over"}
+
+@app.post("/name")
+async def name(name: Name):
+    return {
+        "resp": f"Hello {name.name} + 2"
+    }
