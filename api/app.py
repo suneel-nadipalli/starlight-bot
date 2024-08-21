@@ -84,5 +84,4 @@ def az_clear_memory():
 
 if __name__ == "__main__":
     
-    # running the Flask app on port 5050
-    app.run(debug=True, port=5050)
+    app.run()

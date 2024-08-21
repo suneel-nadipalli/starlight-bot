@@ -1,0 +1,4 @@
+{
+    "appService.defaultWebAppToDeploy": "undefined/subscriptions/a3ddd562-6212-4ca6-bfbe-6b273d0fcfba/resourceGroups/appsvc_linux_centralus_basic/providers/Microsoft.Web/sites/lb-web-api",
+    "appService.deploySubpath": "."
+}

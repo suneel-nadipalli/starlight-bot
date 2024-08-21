@@ -13,7 +13,13 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import axios from "axios";
 import "../css/Chatbot.css";
 
+// const API_URL = "https://func-app-rag.azurewebsites.net/api";
+
+const API_URL = "http://localhost:7071/api";
+
 const Chatbot = () => {
+  const userUUID = localStorage.getItem("userUUID");
+
   // Hooks for managing messages, user input, and typing indicator
   const [messages, setMessages] = useState(() => {
     const savedMessages = localStorage.getItem("chatMessages");
@@ -36,20 +42,32 @@ const Chatbot = () => {
 
       setIsTyping(true); // Show typing indicator
       try {
-        const response = await axios.post(
-          "http://127.0.0.1:5050/query_az_rag",
-          {
-            message: input,
-          },
-        );
+        const response = await axios.post(`${API_URL}/az_rag_query`, {
+          message: input,
+          userUUID: userUUID,
+        });
         console.log("Response from server:", response.data.answer);
-        console.log("Response from server 2:", response.data.srcs);
+        console.log("Response from server 2:", response.data.sources);
+
+        const sources = response.data.sources;
+        const sourceMessage = sources
+          .map((item) => `Source: ${item.source} | Score: ${item.score}`)
+          .join("<br>");
+
+        console.log("User", userUUID, "asked a question");
         const botMessage = { text: response.data.answer, user: "bot" };
         setMessages((prevMessages) => [...prevMessages, botMessage]); // Add bot response to state
+
+        const botSourceMessage = {
+          text: sourceMessage,
+          user: "bot",
+          isHtml: true,
+        };
+        setMessages((prevMessages) => [...prevMessages, botSourceMessage]);
       } catch (error) {
         console.error("Error sending message:", error);
         const errorMessage = {
-          text: "Error getting response from the server",
+          text: error.message,
           user: "bot",
         };
         setMessages((prevMessages) => [...prevMessages, errorMessage]); // Handle error in message state
@@ -63,14 +81,15 @@ const Chatbot = () => {
   const handleClearMessages = () => {
     localStorage.removeItem("chatMessages"); // Remove messages from localStorage
     setMessages([]); // Clear messages in state
-    fetch("http://localhost:5050/az_clear_memory", {
+    fetch(`${API_URL}/az_clear_memory`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
+      body: JSON.stringify({ userUUID: userUUID }),
     })
       .then((response) => response.json())
-      .then((data) => console.log(data)) // Log response from server
+      .then((data) => console.log("User has", userUUID, "cleared memory")) // Log response from server
       .catch((error) => console.error("Error clearing memory:", error)); // Log error if any
   };
 
@@ -94,7 +113,11 @@ const Chatbot = () => {
               alignSelf: msg.user === "user" ? "flex-end" : "flex-start",
             }}
           >
-            {msg.text}
+            {msg.isHtml ? (
+              <span dangerouslySetInnerHTML={{ __html: msg.text }} />
+            ) : (
+              msg.text
+            )}
           </Typography>
         ))}
         {/* Show typing indicator when bot is typing */}

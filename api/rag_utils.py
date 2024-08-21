@@ -1,9 +1,3 @@
-from langchain_openai.chat_models import ChatOpenAI
-
-from langchain_openai import OpenAIEmbeddings
-
-from langchain.prompts import ChatPromptTemplate
-
 from numpy import dot
 from numpy.linalg import norm
 
@@ -76,7 +70,7 @@ def az_rag_query(query, history):
 
     headers = {'Content-Type':'application/json', 
                'Authorization':('Bearer '+ api_key), 
-               'azureml-model-deployment': f'suneel-8009-rdgzv-1'}
+               'azureml-model-deployment': f'suneel-8009-zquye-1'}
     
     req = urllib.request.Request(url, body, headers)
 

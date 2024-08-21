@@ -13,3 +13,4 @@ pymongo==4.8.0
 PyPDF2==3.0.1
 pypdf==4.3.0
 unstructured==0.15.0
+gunicorn==22.0.0
